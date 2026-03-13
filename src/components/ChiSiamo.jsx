@@ -1,95 +1,111 @@
-import { Heart, Shield, Laptop, CalendarCheck, FileCheck } from 'lucide-react'
-import clinicFacade from '../assets/foto/foto-12.webp'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import clinicFacade from '../assets/foto/foto-13.webp'
 import clinicInterior from '../assets/foto/foto-2.webp'
 
-const values = [
-  { icon: Heart, title: 'Prestazioni personalizzate', desc: 'Ogni percorso di cura è costruito su misura per le tue esigenze' },
-  { icon: Laptop, title: 'Tecnologie digitali', desc: 'TAC 3D, scanner intraorale e chirurgia guidata' },
-  { icon: Shield, title: 'Ambiente sicuro e accogliente', desc: 'Protocolli rigorosi in un ambiente moderno e confortevole' },
-  { icon: CalendarCheck, title: 'Prenotazioni flessibili', desc: 'Orari comodi e prenotazione rapida via WhatsApp' },
-  { icon: FileCheck, title: 'Trasparenza nei preventivi', desc: 'Preventivi dettagliati e chiari, senza sorprese' },
-]
+gsap.registerPlugin(ScrollTrigger)
 
 export default function ChiSiamo() {
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.chi-label', { opacity: 0, x: -30 }, {
+        opacity: 1, x: 0, duration: 0.8,
+        scrollTrigger: { trigger: '.chi-label', start: 'top 85%' }
+      })
+
+      gsap.fromTo('.chi-heading span', { y: '100%' }, {
+        y: '0%', duration: 1, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.chi-heading', start: 'top 80%' }
+      })
+
+      gsap.to('.chi-img-main img', {
+        yPercent: -8, ease: 'none',
+        scrollTrigger: { trigger: '.chi-img-main', start: 'top bottom', end: 'bottom top', scrub: 0.6 }
+      })
+
+      gsap.fromTo('.chi-img-small',
+        { clipPath: 'inset(0 0 0 100%)' },
+        { clipPath: 'inset(0 0 0 0%)', duration: 1.2, ease: 'power4.inOut',
+          scrollTrigger: { trigger: '.chi-img-small', start: 'top 75%' }
+        }
+      )
+
+      gsap.fromTo('.chi-text', { opacity: 0, y: 40 }, {
+        opacity: 1, y: 0, duration: 0.9, stagger: 0.2,
+        scrollTrigger: { trigger: '.chi-text-wrap', start: 'top 75%' }
+      })
+
+      gsap.fromTo('.chi-quote', { opacity: 0, x: 60 }, {
+        opacity: 1, x: 0, duration: 1.2, ease: 'power3.out',
+        scrollTrigger: { trigger: '.chi-quote', start: 'top 80%' }
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="chi-siamo" className="py-20 md:py-28 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block text-primary-600 font-semibold text-sm tracking-wider uppercase mb-3">Chi Siamo</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 text-balance">
-            La nostra forza è l'ascolto
-          </h2>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-            Ogni paziente ha una storia, e ogni sorriso merita un progetto su misura.
-          </p>
+    <section ref={sectionRef} id="chi-siamo" className="relative bg-[var(--cream)] overflow-hidden" style={{ paddingTop: 'var(--space-2xl)', paddingBottom: 'var(--space-xl)' }}>
+      <div className="px-6 md:px-10 lg:px-16">
+        <div className="chi-label font-mono text-[11px] text-[var(--gray)] uppercase tracking-[0.3em] mb-6" style={{ opacity: 0 }}>
+          ( 01 ) — Chi Siamo
         </div>
 
-        {/* Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-20">
-          {/* Images */}
-          <div className="relative">
-            <div className="grid grid-cols-5 gap-4">
-              <div className="col-span-3">
-                <img
-                  src={clinicFacade}
-                  alt="Facciata della clinica MG Dental"
-                  className="w-full h-72 sm:h-96 object-cover rounded-2xl shadow-xl"
-                />
-              </div>
-              <div className="col-span-2 pt-8">
-                <img
-                  src={clinicInterior}
-                  alt="Sala operatoria moderna della clinica MG Dental"
-                  className="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-xl"
-                />
-              </div>
+        <div className="chi-heading max-w-4xl mb-16 lg:mb-24">
+          <h2 className="font-serif text-fluid-display leading-[0.95] text-[var(--ink)]">
+            <span className="line-wrap"><span className="block">La nostra</span></span>
+            <span className="line-wrap"><span className="block italic text-[var(--blue)]">forza</span></span>
+            <span className="line-wrap"><span className="block">è l'ascolto</span></span>
+          </h2>
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-6 lg:gap-0 items-start">
+          <div className="lg:col-span-7 lg:-ml-16 relative">
+            <div className="chi-img-main overflow-hidden rounded-r-2xl lg:rounded-r-3xl">
+              <img src={clinicFacade} alt="Ingresso clinica MG Dental" className="w-full h-[50vh] lg:h-[70vh] object-cover" />
             </div>
-            {/* Badge */}
-            <div className="absolute -bottom-6 left-6 bg-primary-600 text-white px-6 py-3 rounded-xl shadow-lg shadow-primary-600/30">
-              <p className="text-2xl font-bold">Dal 2023</p>
-              <p className="text-sm text-white/80">al servizio del tuo sorriso</p>
+            <div className="absolute -bottom-6 right-6 lg:right-12 bg-[var(--ink)] text-white px-8 py-4 rounded-xl z-10">
+              <p className="font-serif text-3xl italic">2023</p>
+              <p className="font-mono text-[9px] uppercase tracking-widest text-white/50 mt-1">Fondazione</p>
             </div>
           </div>
 
-          {/* Text */}
-          <div>
-            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
-              Un team affiatato per cure odontoiatriche d'eccellenza
-            </h3>
-            <p className="text-gray-600 mb-4 leading-relaxed">
+          <div className="lg:col-span-4 lg:col-start-9 lg:-mt-20 chi-text-wrap">
+            <p className="chi-text text-fluid-base text-[var(--gray)] leading-relaxed mb-6" style={{ opacity: 0 }}>
               MG Dental nasce nel 2023 dall'esperienza e dalla visione di un team affiatato e altamente specializzato,
               con l'obiettivo di offrire cure odontoiatriche d'eccellenza in un ambiente moderno, accogliente e
               tecnologicamente avanzato.
             </p>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              Dopo tanti anni di collaborazione, i fondatori hanno deciso di creare una realtà indipendente,
-              trasparente, che mette il paziente al centro di ogni decisione clinica.
+            <p className="chi-text text-fluid-base text-[var(--gray)] leading-relaxed mb-10" style={{ opacity: 0 }}>
+              I fondatori hanno creato una realtà indipendente e trasparente, che mette il paziente al centro di ogni decisione clinica.
             </p>
-            <a
-              href="#team"
-              className="inline-flex items-center gap-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors"
-            >
-              Scopri il nostro team
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            <a href="#team" className="chi-text inline-flex items-center gap-3 group" style={{ opacity: 0 }}>
+              <span className="font-mono text-[11px] text-[var(--ink)] uppercase tracking-widest">Scopri il team</span>
+              <span className="w-8 h-[1px] bg-[var(--ink)] group-hover:w-14 transition-all duration-500" />
             </a>
           </div>
         </div>
 
-        {/* Values */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          {values.map((v) => (
-            <div
-              key={v.title}
-              className="bg-gray-50 rounded-2xl p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <v.icon className="w-6 h-6 text-primary-600" />
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2 text-sm">{v.title}</h4>
-              <p className="text-gray-500 text-xs leading-relaxed">{v.desc}</p>
+        <div className="grid lg:grid-cols-12 mt-20 lg:mt-32 items-center gap-8">
+          <div className="lg:col-span-5 lg:col-start-2">
+            <blockquote className="chi-quote" style={{ opacity: 0 }}>
+              <p className="font-serif italic text-fluid-3xl leading-[1.15] text-[var(--ink)]">
+                "Ogni paziente ha una storia, e ogni sorriso merita un progetto su misura."
+              </p>
+              <footer className="mt-6 font-mono text-[11px] text-[var(--gray)] uppercase tracking-widest">
+                — Filosofia MG Dental
+              </footer>
+            </blockquote>
+          </div>
+
+          <div className="lg:col-span-4 lg:col-start-8">
+            <div className="chi-img-small overflow-hidden rounded-2xl" style={{ clipPath: 'inset(0 0 0 100%)' }}>
+              <img src={clinicInterior} alt="Sala operatoria MG Dental" className="w-full h-[40vh] object-cover" />
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>

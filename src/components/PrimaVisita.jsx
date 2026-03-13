@@ -1,104 +1,134 @@
-import { MessageCircle, CheckCircle2, CreditCard, Banknote, Smartphone, Building2 } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import fotoTreatment from '../assets/foto/foto-6.webp'
 
-const visitSteps = [
-  { title: 'Valutazione clinica completa', desc: 'Esame approfondito della tua situazione orale' },
-  { title: 'Esami diagnostici preliminari', desc: 'Radiografie e scansioni per una diagnosi precisa' },
-  { title: 'Preventivo dettagliato', desc: 'Piano di cura personalizzato, chiaro e trasparente' },
-]
-
-const paymentMethods = [
-  { icon: Banknote, label: 'Contanti' },
-  { icon: CreditCard, label: 'Carte e Bancomat' },
-  { icon: Building2, label: 'Bonifico' },
-  { icon: Smartphone, label: 'Satispay / Apple Pay / Google Pay' },
-]
+gsap.registerPlugin(ScrollTrigger)
 
 export default function PrimaVisita() {
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.pv-label', { opacity: 0, x: -30 }, {
+        opacity: 1, x: 0, duration: 0.8,
+        scrollTrigger: { trigger: '.pv-label', start: 'top 85%' }
+      })
+
+      gsap.fromTo('.pv-heading span', { y: '100%' }, {
+        y: '0%', duration: 1, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.pv-heading', start: 'top 80%' }
+      })
+
+      gsap.fromTo('.pv-img', { clipPath: 'inset(0 100% 0 0)' }, {
+        clipPath: 'inset(0 0% 0 0)', duration: 1.4, ease: 'power4.inOut',
+        scrollTrigger: { trigger: '.pv-img', start: 'top 75%' }
+      })
+
+      gsap.fromTo('.pv-step', { opacity: 0, y: 30 }, {
+        opacity: 1, y: 0, duration: 0.7, stagger: 0.15,
+        scrollTrigger: { trigger: '.pv-steps', start: 'top 80%' }
+      })
+
+      gsap.fromTo('.pv-finance', { opacity: 0, y: 40 }, {
+        opacity: 1, y: 0, duration: 0.9,
+        scrollTrigger: { trigger: '.pv-finance', start: 'top 80%' }
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="prima-visita" className="py-20 md:py-28 bg-gradient-to-br from-primary-50 via-white to-accent-400/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Prima Visita */}
-          <div>
-            <span className="inline-block text-primary-600 font-semibold text-sm tracking-wider uppercase mb-3">Prima Visita</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              La tua prima visita è{' '}
-              <span className="text-primary-600">senza impegno</span>
-            </h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              La prima visita è il punto di partenza del tuo percorso con noi. L'obiettivo è offrirti una cura
-              trasparente, serena, costruita intorno alle tue reali esigenze.
-            </p>
+    <section ref={sectionRef} id="prima-visita" className="relative bg-[var(--cream)] overflow-hidden" style={{ paddingTop: 'var(--space-2xl)', paddingBottom: 'var(--space-2xl)' }}>
+      <div className="px-6 md:px-10 lg:px-16">
+        <div className="pv-label font-mono text-[11px] text-[var(--gray)] uppercase tracking-[0.3em] mb-6" style={{ opacity: 0 }}>
+          ( 05 ) — Prima Visita
+        </div>
 
-            <div className="space-y-4 mb-8">
-              {visitSteps.map((step, i) => (
-                <div key={step.title} className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center shrink-0 font-bold text-sm">
-                    {i + 1}
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">{step.title}</h4>
-                    <p className="text-gray-500 text-sm">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
+        {/* Large headline — dramatic */}
+        <div className="pv-heading max-w-6xl mb-16 lg:mb-20">
+          <h2 className="font-serif text-fluid-display leading-[0.95] text-[var(--ink)]">
+            <span className="line-wrap"><span className="block">La tua prima visita è</span></span>
+            <span className="line-wrap"><span className="block italic text-[var(--blue)]">senza impegno</span></span>
+          </h2>
+        </div>
+
+        {/* Asymmetric layout */}
+        <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-start">
+          {/* Image — right side, pulled up */}
+          <div className="lg:col-span-5 lg:col-start-8 lg:-mt-8 mb-12 lg:mb-0 lg:order-2">
+            <div className="pv-img overflow-hidden rounded-2xl" style={{ clipPath: 'inset(0 100% 0 0)' }}>
+              <img src={fotoTreatment} alt="Trattamento dentale" className="w-full h-[45vh] lg:h-[60vh] object-cover" />
             </div>
-
-            <a
-              href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20senza%20impegno%20presso%20MG%20Dental."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-200 shadow-lg shadow-primary-600/25 hover:shadow-primary-600/40"
-            >
-              <MessageCircle className="w-5 h-5" />
-              Prenota la tua Prima Visita
-            </a>
           </div>
 
-          {/* Pagamenti */}
-          <div>
-            <span className="inline-block text-primary-600 font-semibold text-sm tracking-wider uppercase mb-3">Pagamenti e Finanziamenti</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Soluzioni flessibili per ogni budget
-            </h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              Crediamo che le cure odontoiatriche di qualità debbano essere accessibili a tutti. Per questo offriamo
-              diverse opzioni di pagamento e finanziamento.
+          {/* Content — left */}
+          <div className="lg:col-span-6 lg:order-1">
+            <p className="text-[var(--gray)] text-fluid-lg leading-relaxed mb-12 max-w-lg">
+              La prima visita è il punto di partenza del tuo percorso con noi. L'obiettivo è offrirti una cura
+              trasparente, costruita intorno alle tue reali esigenze.
             </p>
 
-            {/* Payment Methods */}
-            <div className="grid grid-cols-2 gap-3 mb-8">
-              {paymentMethods.map((pm) => (
-                <div key={pm.label} className="flex items-center gap-3 bg-white rounded-xl p-4 shadow-sm">
-                  <pm.icon className="w-5 h-5 text-primary-600 shrink-0" />
-                  <span className="text-gray-700 text-sm font-medium">{pm.label}</span>
+            {/* Steps — vertical, not cards */}
+            <div className="pv-steps space-y-8 mb-16">
+              {[
+                { num: '01', title: 'Valutazione clinica completa', desc: 'Esame approfondito della tua situazione orale con le nostre tecnologie diagnostiche.' },
+                { num: '02', title: 'Esami diagnostici', desc: 'Radiografie e scansioni digitali per una diagnosi precisa e sicura.' },
+                { num: '03', title: 'Preventivo personalizzato', desc: 'Piano di cura dettagliato, chiaro e trasparente. Senza sorprese.' },
+              ].map((step) => (
+                <div key={step.num} className="pv-step flex gap-6" style={{ opacity: 0 }}>
+                  <span className="font-mono text-fluid-3xl text-[var(--blue)] font-bold leading-none shrink-0">{step.num}</span>
+                  <div>
+                    <h4 className="font-serif text-fluid-xl text-[var(--ink)] mb-1">{step.title}</h4>
+                    <p className="text-[var(--gray)] text-fluid-base leading-relaxed">{step.desc}</p>
+                  </div>
                 </div>
               ))}
             </div>
 
-            {/* Financing Card */}
-            <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl p-6 text-white">
-              <h4 className="text-xl font-bold mb-4">Finanziamenti personalizzati</h4>
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-accent-400 shrink-0" />
-                  <span>Rateizzazione fino a <strong>84 mesi</strong></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-accent-400 shrink-0" />
-                  <span>Tasso zero fino a <strong>12 mesi</strong></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-accent-400 shrink-0" />
-                  <span><strong>Nessun anticipo</strong> richiesto</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-accent-400 shrink-0" />
-                  <span>Risposta rapida, anche in clinica</span>
-                </div>
+            {/* Financing — dark card, offset */}
+            <div className="pv-finance bg-[var(--ink)] text-white rounded-2xl p-8 lg:p-10 lg:-mr-20 relative z-10" style={{ opacity: 0 }}>
+              <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest">Pagamenti e Finanziamenti</span>
+              <h3 className="font-serif text-fluid-2xl mt-3 mb-6">Soluzioni flessibili</h3>
+
+              <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                {[
+                  'Rateizzazione fino a 84 mesi',
+                  'Tasso zero fino a 12 mesi',
+                  'Nessun anticipo richiesto',
+                  'Risposta rapida in clinica',
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-[var(--cyan)] rounded-full shrink-0" />
+                    <span className="text-white/70 text-sm">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                {['Carte', 'Bancomat', 'Bonifico', 'Satispay', 'Apple Pay', 'Google Pay'].map((m) => (
+                  <span key={m} className="text-[10px] font-mono uppercase tracking-wider text-white/30 border border-white/10 rounded-full px-3 py-1">{m}</span>
+                ))}
               </div>
             </div>
           </div>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-16 lg:mt-24 text-center lg:text-left lg:ml-[8.333%]">
+          <a
+            href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20senza%20impegno%20presso%20MG%20Dental."
+            target="_blank" rel="noopener noreferrer"
+            className="group inline-flex items-center gap-4"
+          >
+            <span className="w-14 h-14 rounded-full bg-[var(--blue)] flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+              </svg>
+            </span>
+            <span className="text-[var(--ink)] text-fluid-lg font-light tracking-wide">Prenota la tua prima visita</span>
+          </a>
         </div>
       </div>
     </section>

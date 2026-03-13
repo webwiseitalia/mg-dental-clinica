@@ -1,88 +1,109 @@
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import fotoDigitale from '../assets/foto/foto-7.webp'
 import fotoSurgery from '../assets/foto/foto-4.webp'
+import fotoXray from '../assets/foto/foto-3.webp'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const techs = [
-  {
-    title: 'TAC 3D',
-    desc: 'Diagnostica tridimensionale per una pianificazione precisa degli interventi. Immagini ad altissima risoluzione per diagnosi sicure e accurate.',
-    icon: (
-      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Scanner Intraorale Digitale',
-    desc: 'Impronte digitali senza pasta, per il massimo comfort del paziente. Precisione millimetrica per protesi e allineatori perfetti.',
-    icon: (
-      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Radiologia ad Alta Precisione',
-    desc: 'Immagini dettagliate per diagnosi accurate. Radiografia digitale a bassa dose per la massima sicurezza dei nostri pazienti.',
-    icon: (
-      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Chirurgia Guidata Digitale',
-    desc: 'Progettazione digitale degli interventi implantari per la massima precisione e minima invasività. Risultati predicibili e tempi di recupero ridotti.',
-    icon: (
-      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
-      </svg>
-    ),
-  },
+  { title: 'TAC 3D', desc: 'Diagnostica tridimensionale per una pianificazione precisa degli interventi chirurgici.' },
+  { title: 'Scanner Intraorale', desc: 'Impronte digitali senza pasta, per il massimo comfort e precisione millimetrica.' },
+  { title: 'Radiologia Digitale', desc: 'Immagini dettagliate a bassa dose per diagnosi accurate e sicure.' },
+  { title: 'Chirurgia Guidata', desc: 'Progettazione digitale per massima precisione e minima invasività.' },
 ]
 
 export default function Tecnologie() {
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.tech-label', { opacity: 0, x: -30 }, {
+        opacity: 1, x: 0, duration: 0.8,
+        scrollTrigger: { trigger: '.tech-label', start: 'top 85%' }
+      })
+
+      gsap.fromTo('.tech-heading span', { y: '100%' }, {
+        y: '0%', duration: 1, stagger: 0.12, ease: 'power3.out',
+        scrollTrigger: { trigger: '.tech-heading', start: 'top 80%' }
+      })
+
+      // Images — staggered parallax
+      gsap.to('.tech-img-1', {
+        yPercent: -12, ease: 'none',
+        scrollTrigger: { trigger: '.tech-img-1', start: 'top bottom', end: 'bottom top', scrub: 0.5 }
+      })
+      gsap.to('.tech-img-2', {
+        yPercent: -6, ease: 'none',
+        scrollTrigger: { trigger: '.tech-img-2', start: 'top bottom', end: 'bottom top', scrub: 0.8 }
+      })
+
+      // Reveal images
+      gsap.fromTo('.tech-img-1', { clipPath: 'inset(100% 0 0 0)' }, {
+        clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'power4.inOut',
+        scrollTrigger: { trigger: '.tech-img-1', start: 'top 80%' }
+      })
+      gsap.fromTo('.tech-img-2', { clipPath: 'inset(0 0 100% 0)' }, {
+        clipPath: 'inset(0 0 0% 0)', duration: 1.2, ease: 'power4.inOut',
+        scrollTrigger: { trigger: '.tech-img-2', start: 'top 75%' }
+      })
+
+      document.querySelectorAll('.tech-item').forEach((item, i) => {
+        gsap.fromTo(item, { opacity: 0, y: 30 }, {
+          opacity: 1, y: 0, duration: 0.7, delay: i * 0.1,
+          scrollTrigger: { trigger: item, start: 'top 85%' }
+        })
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="tecnologie" className="py-20 md:py-28 bg-gray-900 text-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block text-accent-400 font-semibold text-sm tracking-wider uppercase mb-3">Tecnologie</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-balance">
-            Tecnologie all'avanguardia
-          </h2>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Investiamo costantemente nelle migliori tecnologie per offrirti diagnosi precise e trattamenti sicuri.
-          </p>
+    <section ref={sectionRef} id="tecnologie" className="relative bg-[var(--ink)] text-white overflow-hidden" style={{ paddingTop: 'var(--space-2xl)', paddingBottom: 'var(--space-2xl)' }}>
+      <div className="px-6 md:px-10 lg:px-16">
+        <div className="tech-label font-mono text-[11px] text-white/30 uppercase tracking-[0.3em] mb-6" style={{ opacity: 0 }}>
+          ( 04 ) — Tecnologie
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Tech Cards */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            {techs.map((tech) => (
-              <div
-                key={tech.title}
-                className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-accent-400/30 rounded-2xl p-6 transition-all duration-300"
-              >
-                <div className="text-accent-400 mb-4">{tech.icon}</div>
-                <h3 className="text-lg font-bold mb-2">{tech.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{tech.desc}</p>
-              </div>
-            ))}
+        <div className="tech-heading max-w-5xl mb-20 lg:mb-28">
+          <h2 className="font-serif text-fluid-display leading-[0.95]">
+            <span className="line-wrap"><span className="block">Tecnologie</span></span>
+            <span className="line-wrap"><span className="block italic text-[var(--cyan)]">all'avanguardia</span></span>
+          </h2>
+        </div>
+
+        {/* Asymmetric layout: overlapping images + text */}
+        <div className="lg:grid lg:grid-cols-12 lg:gap-6 items-start">
+          {/* Left column — stacked images, overlapping */}
+          <div className="lg:col-span-6 relative mb-12 lg:mb-0">
+            <div className="tech-img-1 overflow-hidden rounded-2xl" style={{ clipPath: 'inset(100% 0 0 0)' }}>
+              <img src={fotoDigitale} alt="Diagnostica digitale" className="w-full h-[40vh] lg:h-[55vh] object-cover" />
+            </div>
+            <div className="tech-img-2 overflow-hidden rounded-2xl w-2/3 lg:w-3/5 -mt-16 lg:-mt-24 ml-auto mr-4 relative z-10 border-4 border-[var(--ink)]" style={{ clipPath: 'inset(0 0 100% 0)' }}>
+              <img src={fotoSurgery} alt="Chirurgia guidata digitale" className="w-full h-[30vh] lg:h-[40vh] object-cover" />
+            </div>
           </div>
 
-          {/* Images */}
-          <div className="relative">
-            <img
-              src={fotoDigitale}
-              alt="Dottore che mostra una radiografia digitale alla paziente"
-              className="w-full h-80 object-cover rounded-2xl shadow-2xl"
-            />
-            <img
-              src={fotoSurgery}
-              alt="Team di chirurghi durante un intervento guidato digitalmente"
-              className="w-2/3 h-52 object-cover rounded-2xl shadow-2xl absolute -bottom-8 -left-4 border-4 border-gray-900"
-            />
+          {/* Right column — tech list + small image */}
+          <div className="lg:col-span-5 lg:col-start-8 lg:pt-16">
+            <div className="space-y-8 mb-12">
+              {techs.map((tech, i) => (
+                <div key={tech.title} className="tech-item" style={{ opacity: 0 }}>
+                  <div className="flex items-baseline gap-4 mb-2">
+                    <span className="font-mono text-[10px] text-white/20">{String(i + 1).padStart(2, '0')}</span>
+                    <h3 className="font-serif text-fluid-xl text-white">{tech.title}</h3>
+                  </div>
+                  <p className="text-white/50 text-fluid-base leading-relaxed ml-10">{tech.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Small x-ray image */}
+            <div className="overflow-hidden rounded-xl w-2/3 ml-10">
+              <img src={fotoXray} alt="Radiografia implantare" className="w-full h-[25vh] object-cover opacity-60" />
+            </div>
           </div>
         </div>
       </div>

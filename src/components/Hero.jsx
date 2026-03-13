@@ -1,93 +1,125 @@
-import { MessageCircle, Users, ShieldCheck, CreditCard, ScanLine, ChevronDown } from 'lucide-react'
-import clinicExterior from '../assets/foto/foto-1.webp'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import clinicExterior from '../assets/foto/foto-12.webp'
 
-const badges = [
-  { icon: ShieldCheck, text: 'Prima visita senza impegno' },
-  { icon: CreditCard, text: 'Finanziamenti a tasso zero' },
-  { icon: Users, text: 'Fondi sanitari convenzionati' },
-  { icon: ScanLine, text: 'TAC 3D e tecnologie digitali' },
-]
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Hero() {
-  return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <img
-          src={clinicExterior}
-          alt="Esterno della clinica MG Dental a Castelvetro Piacentino"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/75 to-gray-900/50" />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-gray-900/30" />
-      </div>
+  const sectionRef = useRef(null)
+  const imageRef = useRef(null)
+  const titleRef = useRef(null)
+  const subtitleRef = useRef(null)
+  const badgesRef = useRef(null)
+  const ctaRef = useRef(null)
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20 w-full">
-        <div className="max-w-3xl">
-          {/* Tag */}
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-8">
-            <span className="w-2 h-2 bg-accent-400 rounded-full animate-pulse" />
-            <span className="text-white/90 text-sm font-medium">Studio Dentistico a Castelvetro Piacentino</span>
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(imageRef.current,
+        { clipPath: 'inset(0 100% 0 0)', scale: 1.15 },
+        { clipPath: 'inset(0 0% 0 0)', scale: 1, duration: 1.8, delay: 0.3, ease: 'power4.inOut' }
+      )
+
+      const titleLines = titleRef.current.querySelectorAll('.hero-line')
+      gsap.fromTo(titleLines,
+        { y: '110%', rotate: 3 },
+        { y: '0%', rotate: 0, duration: 1.2, stagger: 0.12, delay: 0.6, ease: 'power3.out' }
+      )
+
+      gsap.fromTo(subtitleRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1, delay: 1.3, ease: 'power2.out' }
+      )
+
+      const badges = badgesRef.current.children
+      gsap.fromTo(badges,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, delay: 1.6, ease: 'power2.out' }
+      )
+
+      gsap.fromTo(ctaRef.current,
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.8, delay: 2, ease: 'power2.out' }
+      )
+
+      gsap.to(imageRef.current.querySelector('img'), {
+        yPercent: 12, ease: 'none',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top top', end: 'bottom top', scrub: 0.8 }
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
+  return (
+    <section ref={sectionRef} id="hero" className="relative min-h-screen overflow-hidden bg-[var(--cream)]">
+      <div className="relative min-h-screen flex flex-col lg:flex-row">
+        <div className="relative z-10 flex flex-col justify-end lg:justify-center px-6 md:px-10 lg:px-16 pt-32 pb-12 lg:pb-0 lg:w-[55%]">
+          <div ref={subtitleRef} className="mb-8" style={{ opacity: 0 }}>
+            <span className="font-mono text-[var(--gray)] text-[11px] uppercase tracking-[0.25em]">
+              Studio Dentistico — Castelvetro Piacentino
+            </span>
           </div>
 
-          {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-[1.1] text-balance">
-            Scegli di vivere{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-primary-400">
-              sorridendo
+          <h1 ref={titleRef} className="mb-8 lg:mb-12">
+            <span className="line-wrap">
+              <span className="hero-line font-serif text-fluid-hero leading-[0.9] tracking-[-0.03em] text-[var(--ink)] block">Scegli di</span>
+            </span>
+            <span className="line-wrap">
+              <span className="hero-line font-serif italic text-fluid-hero leading-[0.9] tracking-[-0.03em] text-[var(--blue)] block">vivere</span>
+            </span>
+            <span className="line-wrap">
+              <span className="hero-line font-serif text-fluid-hero leading-[0.9] tracking-[-0.03em] text-[var(--ink)] block">sorridendo</span>
             </span>
           </h1>
 
-          {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-white/80 mb-10 max-w-2xl leading-relaxed">
-            MG Dental è il tuo studio odontoiatrico a Castelvetro Piacentino. Tecnologie all'avanguardia,
-            specialisti dedicati e un percorso di cura trasparente, costruito intorno a te.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-16">
-            <a
-              href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20presso%20MG%20Dental."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-200 shadow-xl shadow-primary-600/30 hover:shadow-primary-600/50 hover:-translate-y-0.5"
-            >
-              <MessageCircle className="w-5 h-5" />
-              Prenota la tua Prima Visita
-            </a>
-            <a
-              href="#team"
-              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/25 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-200"
-            >
-              <Users className="w-5 h-5" />
-              Scopri il Team
-            </a>
+          <div ref={badgesRef} className="flex flex-wrap gap-3 lg:gap-4 max-w-lg">
+            {['Prima visita gratuita', 'Tasso zero', 'Fondi convenzionati', 'TAC 3D digitale'].map((badge) => (
+              <span key={badge} className="font-mono text-[10px] sm:text-[11px] text-[var(--gray)] uppercase tracking-wider border border-black/10 rounded-full px-4 py-2">
+                {badge}
+              </span>
+            ))}
           </div>
 
-          {/* Trust Badges */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {badges.map((badge) => (
-              <div
-                key={badge.text}
-                className="flex items-center gap-2.5 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-3"
-              >
-                <badge.icon className="w-5 h-5 text-accent-400 shrink-0" />
-                <span className="text-white/90 text-xs sm:text-sm font-medium leading-tight">{badge.text}</span>
-              </div>
-            ))}
+          <div ref={ctaRef} className="mt-12 lg:mt-16" style={{ opacity: 0 }}>
+            <a
+              href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20presso%20MG%20Dental."
+              target="_blank" rel="noopener noreferrer"
+              className="group inline-flex items-center gap-4"
+            >
+              <span className="w-14 h-14 rounded-full bg-[var(--ink)] flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                </svg>
+              </span>
+              <span className="text-[var(--ink)] text-fluid-lg font-light tracking-wide group-hover:tracking-wider transition-all duration-500">
+                Prenota la tua visita
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div className="lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-[50%] overflow-hidden">
+          <div ref={imageRef} className="w-full h-[50vh] lg:h-full" style={{ clipPath: 'inset(0 100% 0 0)' }}>
+            <img src={clinicExterior} alt="Clinica MG Dental" className="w-full h-full object-cover" />
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <a
-        href="#chi-siamo"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce"
-        aria-label="Scorri verso il basso"
-      >
-        <ChevronDown className="w-8 h-8 text-white/50" />
-      </a>
+      <div className="absolute bottom-8 left-6 md:left-10 z-10 flex items-center gap-3">
+        <div className="w-[1px] h-12 bg-black/20 overflow-hidden">
+          <div className="w-full h-full bg-black" style={{ animation: 'slideDown 2s ease-in-out infinite' }} />
+        </div>
+        <span className="font-mono text-[10px] text-[var(--gray)] uppercase tracking-[0.2em]">Scorri</span>
+      </div>
+
+      <style>{`
+        @keyframes slideDown {
+          0% { transform: translateY(-100%); }
+          50% { transform: translateY(0%); }
+          100% { transform: translateY(100%); }
+        }
+      `}</style>
     </section>
   )
 }

@@ -1,152 +1,108 @@
-import { Phone, MessageCircle, Mail, MapPin, Instagram, Facebook } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import logo from '../assets/logo.webp'
 
-const quickLinks = [
-  { label: 'Chi Siamo', href: '#chi-siamo' },
-  { label: 'Il Team', href: '#team' },
-  { label: 'Servizi', href: '#servizi' },
-  { label: 'Tecnologie', href: '#tecnologie' },
-  { label: 'Fondi Sanitari', href: '#fondi' },
-  { label: 'Prima Visita', href: '#prima-visita' },
-  { label: 'Contatti', href: '#contatti' },
-]
-
-const services = [
-  'Implantologia',
-  'Endodonzia',
-  'Ortodonzia Invisalign',
-  'Estetica Dentale',
-  'Igiene e Prevenzione',
-  'Gnatologia',
-]
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Footer() {
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.footer-cta span', { y: '100%' }, {
+        y: '0%', duration: 1.2, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.footer-cta', start: 'top 85%' }
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <footer className="bg-gray-900 text-white">
-      {/* CTA Banner */}
-      <div className="bg-primary-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-3">
-            Il tuo sorriso merita un progetto su misura
+    <footer ref={sectionRef} className="relative bg-[var(--ink)] text-white overflow-hidden">
+      {/* Big CTA Section */}
+      <div className="px-6 md:px-10 lg:px-16" style={{ paddingTop: 'var(--space-2xl)', paddingBottom: 'var(--space-xl)' }}>
+        <div className="footer-cta max-w-5xl">
+          <h2 className="font-serif text-fluid-display leading-[0.95] mb-10">
+            <span className="line-wrap"><span className="block">Il tuo sorriso merita</span></span>
+            <span className="line-wrap"><span className="block italic text-[var(--cyan)]">un progetto</span></span>
+            <span className="line-wrap"><span className="block">su misura</span></span>
           </h2>
-          <p className="text-white/80 mb-6 max-w-xl mx-auto">
-            Prenota la tua prima visita senza impegno. Ti aspettiamo in clinica.
-          </p>
-          <a
-            href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20presso%20MG%20Dental."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 rounded-full text-lg font-semibold transition-colors"
-          >
-            <MessageCircle className="w-5 h-5" />
-            Prenota Ora
-          </a>
         </div>
+
+        <a
+          href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20presso%20MG%20Dental."
+          target="_blank" rel="noopener noreferrer"
+          className="group inline-flex items-center gap-4"
+        >
+          <span className="w-16 h-16 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:scale-110 transition-all duration-500">
+            <svg className="w-6 h-6 text-white group-hover:text-[var(--ink)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
+          </span>
+          <span className="text-white text-fluid-xl font-light tracking-wide">Prenota ora</span>
+        </a>
       </div>
 
-      {/* Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <img src={logo} alt="MG Dental" className="h-10 w-auto" />
-              <span className="text-xl font-bold">MG Dental</span>
-            </div>
-            <p className="text-gray-400 text-sm mb-4 leading-relaxed">
-              Studio dentistico a Castelvetro Piacentino. Cure odontoiatriche d'eccellenza con tecnologie all'avanguardia.
-            </p>
-            <p className="text-gray-500 text-xs">
-              Direttore Sanitario: Dott. Marco Bosi<br />
-              Odontoiatri PC n.330
-            </p>
+      {/* Divider */}
+      <div className="mx-6 md:mx-10 lg:mx-16 border-t border-white/10" />
+
+      {/* Footer grid — asymmetric */}
+      <div className="px-6 md:px-10 lg:px-16 py-16 lg:grid lg:grid-cols-12 lg:gap-8">
+        {/* Brand — col 1-3 */}
+        <div className="lg:col-span-3 mb-10 lg:mb-0">
+          <div className="flex items-center gap-3 mb-4">
+            <img src={logo} alt="MG Dental" className="h-8 w-auto" />
+            <span className="text-lg font-medium">MG Dental</span>
           </div>
+          <p className="text-white/40 text-sm leading-relaxed mb-4">
+            Studio dentistico a Castelvetro Piacentino. Cure d'eccellenza con tecnologie all'avanguardia.
+          </p>
+          <p className="text-white/25 text-xs">
+            Dir. Sanitario: Dott. Marco Bosi<br />
+            Odontoiatri PC n.330
+          </p>
+        </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-semibold text-lg mb-4">Link Rapidi</h4>
-            <ul className="space-y-2">
-              {quickLinks.map((link) => (
-                <li key={link.href}>
-                  <a href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+        {/* Links — col 5-6 */}
+        <div className="lg:col-span-2 lg:col-start-5 mb-10 lg:mb-0">
+          <span className="font-mono text-[10px] text-white/25 uppercase tracking-widest block mb-4">Link</span>
+          {['Chi Siamo', 'Team', 'Servizi', 'Tecnologie', 'Fondi Sanitari', 'Prima Visita', 'Contatti'].map(link => (
+            <a key={link} href={`#${link.toLowerCase().replace(/ /g, '-').replace('fondi-sanitari', 'fondi').replace('prima-visita', 'prima-visita')}`}
+              className="block text-white/40 hover:text-white text-sm py-1 transition-colors">{link}</a>
+          ))}
+        </div>
 
-          {/* Services */}
-          <div>
-            <h4 className="font-semibold text-lg mb-4">Servizi</h4>
-            <ul className="space-y-2">
-              {services.map((s) => (
-                <li key={s}>
-                  <a href="#servizi" className="text-gray-400 hover:text-white text-sm transition-colors">
-                    {s}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+        {/* Services — col 7-8 */}
+        <div className="lg:col-span-2 lg:col-start-7 mb-10 lg:mb-0">
+          <span className="font-mono text-[10px] text-white/25 uppercase tracking-widest block mb-4">Servizi</span>
+          {['Implantologia', 'Endodonzia', 'Invisalign', 'Estetica Dentale', 'Igiene', 'Gnatologia'].map(s => (
+            <a key={s} href="#servizi" className="block text-white/40 hover:text-white text-sm py-1 transition-colors">{s}</a>
+          ))}
+        </div>
 
-          {/* Contact */}
-          <div>
-            <h4 className="font-semibold text-lg mb-4">Contattaci</h4>
-            <div className="space-y-3">
-              <a href="tel:0523797093" className="flex items-center gap-2 text-gray-400 hover:text-white text-sm transition-colors">
-                <Phone className="w-4 h-4 shrink-0" />
-                0523 797093
-              </a>
-              <a href="https://wa.me/3514163362" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-gray-400 hover:text-white text-sm transition-colors">
-                <MessageCircle className="w-4 h-4 shrink-0" />
-                351 416 3362
-              </a>
-              <a href="mailto:info@mgdental.it" className="flex items-center gap-2 text-gray-400 hover:text-white text-sm transition-colors">
-                <Mail className="w-4 h-4 shrink-0" />
-                info@mgdental.it
-              </a>
-              <div className="flex items-start gap-2 text-gray-400 text-sm">
-                <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>Località Fornace 1<br />29010 Castelvetro Piacentino (PC)</span>
-              </div>
-            </div>
-
-            {/* Social */}
-            <div className="flex items-center gap-3 mt-6">
-              <a
-                href="https://www.instagram.com/mgdental_clinica/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://www.facebook.com/mgdentalclinica"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-            </div>
+        {/* Contact — col 10-12 */}
+        <div className="lg:col-span-3 lg:col-start-10">
+          <span className="font-mono text-[10px] text-white/25 uppercase tracking-widest block mb-4">Contatti</span>
+          <a href="tel:0523797093" className="block text-white/40 hover:text-white text-sm py-1 transition-colors">0523 797093</a>
+          <a href="https://wa.me/3514163362" target="_blank" rel="noopener noreferrer" className="block text-white/40 hover:text-white text-sm py-1 transition-colors">351 416 3362</a>
+          <a href="mailto:info@mgdental.it" className="block text-white/40 hover:text-white text-sm py-1 transition-colors">info@mgdental.it</a>
+          <p className="text-white/30 text-sm py-1">Loc. Fornace 1, 29010 Castelvetro Piacentino (PC)</p>
+          <div className="flex gap-4 mt-4">
+            <a href="https://www.instagram.com/mgdental_clinica/" target="_blank" rel="noopener noreferrer"
+              className="text-white/30 hover:text-white text-sm transition-colors">Instagram</a>
+            <a href="https://www.facebook.com/mgdentalclinica" target="_blank" rel="noopener noreferrer"
+              className="text-white/30 hover:text-white text-sm transition-colors">Facebook</a>
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-xs text-center sm:text-left">
-            © {new Date().getFullYear()} MG Dental — Studio Dentistico. Tutti i diritti riservati.
-          </p>
-          <p className="text-gray-500 text-xs text-center sm:text-right">
-            Dir. Sanitario: Dott. Marco Bosi — Odontoiatri PC n.330
-          </p>
-        </div>
+      {/* Bottom */}
+      <div className="mx-6 md:mx-10 lg:mx-16 border-t border-white/5" />
+      <div className="px-6 md:px-10 lg:px-16 py-6 flex flex-col sm:flex-row justify-between gap-4">
+        <p className="text-white/20 text-xs">© {new Date().getFullYear()} MG Dental — Tutti i diritti riservati.</p>
+        <p className="text-white/20 text-xs">Dir. Sanitario: Dott. Marco Bosi — Odontoiatri PC n.330</p>
       </div>
     </footer>
   )

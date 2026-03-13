@@ -1,93 +1,111 @@
-import { MessageCircle } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const services = [
-  {
-    icon: '🦷',
-    title: 'Implantologia e Chirurgia Orale',
-    desc: 'Impianti singoli, multipli, Toronto Bridge, carico immediato, chirurgia guidata digitale, estrazioni complesse (denti del giudizio).',
-  },
-  {
-    icon: '🔬',
-    title: 'Endodonzia',
-    desc: 'Devitalizzazioni e ritrattamenti canalari, anche casi complessi. Punto di riferimento per colleghi della zona.',
-  },
-  {
-    icon: '✨',
-    title: 'Igiene e Prevenzione',
-    desc: 'Sedute di igiene professionale, programmi di prevenzione personalizzati per mantenere il tuo sorriso sano.',
-  },
-  {
-    icon: '🪥',
-    title: 'Otturazioni',
-    desc: 'Odontoiatria conservativa e ricostruzioni estetiche con materiali di ultima generazione.',
-  },
-  {
-    icon: '👑',
-    title: 'Protesi Mobile e Fissa',
-    desc: 'Protesi su impianti, protesi tradizionali, corone e ponti per ripristinare funzionalità ed estetica.',
-  },
-  {
-    icon: '🔧',
-    title: 'Ortodonzia Tradizionale',
-    desc: 'Apparecchi fissi per bambini e adulti, terapie intercettive per correggere le malocclusioni.',
-  },
-  {
-    icon: '💎',
-    title: 'Ortodonzia Invisibile — Invisalign',
-    desc: 'Allineatori trasparenti, Invisalign Diamond Provider. Trattamenti personalizzati per ogni età.',
-  },
-  {
-    icon: '😁',
-    title: 'Estetica Dentale',
-    desc: 'Faccette estetiche personalizzate, sbiancamenti, trattamenti minimamente invasivi, dermal filler.',
-  },
-  {
-    icon: '🧠',
-    title: 'Gnatologia',
-    desc: 'Disturbi ATM, bruxismo, acufeni, disturbi del sonno (OSAS), dispositivi avanzamento mandibolare (MAD).',
-  },
+  { num: '01', title: 'Implantologia e Chirurgia Orale', desc: 'Impianti singoli, multipli, Toronto Bridge, carico immediato, chirurgia guidata digitale, estrazioni complesse.' },
+  { num: '02', title: 'Endodonzia', desc: 'Devitalizzazioni e ritrattamenti canalari, anche casi complessi. Punto di riferimento per colleghi della zona.' },
+  { num: '03', title: 'Igiene e Prevenzione', desc: 'Sedute di igiene professionale, programmi di prevenzione personalizzati per mantenere il tuo sorriso sano.' },
+  { num: '04', title: 'Otturazioni e Conservativa', desc: 'Odontoiatria conservativa e ricostruzioni estetiche con materiali di ultima generazione.' },
+  { num: '05', title: 'Protesi Mobile e Fissa', desc: 'Protesi su impianti, protesi tradizionali, corone e ponti per funzionalità ed estetica.' },
+  { num: '06', title: 'Ortodonzia Tradizionale', desc: 'Apparecchi fissi per bambini e adulti, terapie intercettive per correggere le malocclusioni.' },
+  { num: '07', title: 'Invisalign — Ortodonzia Invisibile', desc: 'Allineatori trasparenti, Diamond Provider. Trattamenti personalizzati per ogni età.' },
+  { num: '08', title: 'Estetica Dentale', desc: 'Faccette personalizzate, sbiancamenti, trattamenti minimamente invasivi, dermal filler.' },
+  { num: '09', title: 'Gnatologia', desc: 'Disturbi ATM, bruxismo, acufeni, OSAS, dispositivi avanzamento mandibolare (MAD).' },
 ]
 
 export default function Servizi() {
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.serv-label', { opacity: 0, x: -30 }, {
+        opacity: 1, x: 0, duration: 0.8,
+        scrollTrigger: { trigger: '.serv-label', start: 'top 85%' }
+      })
+
+      gsap.fromTo('.serv-heading span', { y: '100%' }, {
+        y: '0%', duration: 1, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.serv-heading', start: 'top 80%' }
+      })
+
+      document.querySelectorAll('.serv-item').forEach((item, i) => {
+        gsap.fromTo(item,
+          { opacity: 0, x: i % 2 === 0 ? -40 : 40 },
+          {
+            opacity: 1, x: 0, duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: item, start: 'top 85%' }
+          }
+        )
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="servizi" className="py-20 md:py-28 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block text-primary-600 font-semibold text-sm tracking-wider uppercase mb-3">I Nostri Servizi</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 text-balance">
-            Cure complete per ogni esigenza
-          </h2>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-            Un'ampia gamma di trattamenti odontoiatrici eseguiti con le più moderne tecnologie e la massima attenzione al paziente.
-          </p>
+    <section ref={sectionRef} id="servizi" className="relative bg-[var(--off-white)] overflow-hidden" style={{ paddingTop: 'var(--space-2xl)', paddingBottom: 'var(--space-2xl)' }}>
+      <div className="px-6 md:px-10 lg:px-16">
+        <div className="serv-label font-mono text-[11px] text-[var(--gray)] uppercase tracking-[0.3em] mb-6" style={{ opacity: 0 }}>
+          ( 03 ) — Servizi
         </div>
 
-        {/* Services Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => (
-            <div
-              key={service.title}
-              className="group bg-gray-50 hover:bg-primary-600 rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-primary-600/20 hover:-translate-y-1"
-            >
-              <div className="text-4xl mb-4">{service.icon}</div>
-              <h3 className="text-lg font-bold text-gray-900 group-hover:text-white mb-2 transition-colors">
-                {service.title}
-              </h3>
-              <p className="text-gray-600 group-hover:text-white/80 text-sm leading-relaxed mb-4 transition-colors">
-                {service.desc}
-              </p>
-              <a
-                href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20informazioni%20sul%20servizio%20di%20{encodeURIComponent(service.title)}."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-primary-600 group-hover:text-white font-semibold text-sm transition-colors"
-              >
-                <MessageCircle className="w-4 h-4" />
-                Prenota una consulenza
-              </a>
+        <div className="serv-heading max-w-5xl mb-16 lg:mb-24">
+          <h2 className="font-serif text-fluid-display leading-[0.95] text-[var(--ink)]">
+            <span className="line-wrap"><span className="block">Cure complete</span></span>
+            <span className="line-wrap"><span className="block">per ogni <span className="italic text-[var(--blue)]">esigenza</span></span></span>
+          </h2>
+        </div>
+
+        {/* Services as a list — NOT cards, NOT a grid */}
+        <div className="max-w-5xl ml-auto">
+          {services.map((service, i) => (
+            <div key={service.num} className="serv-item group border-t border-black/10 py-8 lg:py-10 lg:grid lg:grid-cols-12 lg:gap-6 items-start" style={{ opacity: 0 }}>
+              <div className="lg:col-span-1">
+                <span className="font-mono text-[var(--text-xs)] text-[var(--gray-light)]">{service.num}</span>
+              </div>
+              <div className="lg:col-span-5">
+                <h3 className="font-serif text-fluid-2xl text-[var(--ink)] group-hover:text-[var(--blue)] transition-colors duration-500 leading-tight">
+                  {service.title}
+                </h3>
+              </div>
+              <div className="lg:col-span-5 mt-3 lg:mt-0">
+                <p className="text-[var(--gray)] text-fluid-base leading-relaxed">{service.desc}</p>
+              </div>
+              <div className="lg:col-span-1 mt-3 lg:mt-0 flex lg:justify-end">
+                <a
+                  href={`https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20informazioni%20su%3A%20${encodeURIComponent(service.title)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  <svg className="w-5 h-5 text-[var(--ink)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                  </svg>
+                </a>
+              </div>
             </div>
           ))}
+          {/* Final border */}
+          <div className="border-t border-black/10" />
+        </div>
+
+        {/* CTA — offset left */}
+        <div className="mt-16 lg:mt-20 lg:ml-[8.333%]">
+          <a
+            href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20consulenza%20presso%20MG%20Dental."
+            target="_blank" rel="noopener noreferrer"
+            className="group inline-flex items-center gap-4"
+          >
+            <span className="w-14 h-14 rounded-full bg-[var(--blue)] flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+              </svg>
+            </span>
+            <span className="text-[var(--ink)] text-fluid-lg font-light tracking-wide">Prenota una consulenza</span>
+          </a>
         </div>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import SmoothScroll from './components/SmoothScroll'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import ChiSiamo from './components/ChiSiamo'
@@ -12,19 +13,21 @@ import WhatsAppButton from './components/WhatsAppButton'
 
 function App() {
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      <Hero />
-      <ChiSiamo />
-      <Team />
-      <Servizi />
-      <Tecnologie />
-      <PrimaVisita />
-      <Fondi />
-      <Contatti />
-      <Footer />
-      <WhatsAppButton />
-    </div>
+    <SmoothScroll>
+      <div className="relative">
+        <Navbar />
+        <Hero />
+        <ChiSiamo />
+        <Team />
+        <Servizi />
+        <Tecnologie />
+        <PrimaVisita />
+        <Fondi />
+        <Contatti />
+        <Footer />
+        <WhatsAppButton />
+      </div>
+    </SmoothScroll>
   )
 }
 

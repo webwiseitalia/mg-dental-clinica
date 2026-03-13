@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
-import { Menu, X, Phone, MessageCircle } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import gsap from 'gsap'
 import logo from '../assets/logo.webp'
 
 const navLinks = [
@@ -7,138 +8,115 @@ const navLinks = [
   { label: 'Team', href: '#team' },
   { label: 'Servizi', href: '#servizi' },
   { label: 'Tecnologie', href: '#tecnologie' },
-  { label: 'Fondi Sanitari', href: '#fondi' },
+  { label: 'Fondi', href: '#fondi' },
   { label: 'Contatti', href: '#contatti' },
 ]
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const navRef = useRef(null)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
+    gsap.fromTo(navRef.current,
+      { y: -100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, delay: 0.5, ease: 'power3.out' }
+    )
   }, [])
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [mobileOpen])
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-3 shrink-0">
-            <img src={logo} alt="MG Dental logo" className="h-12 w-auto" />
-            <div className="hidden sm:block">
-              <span className={`text-lg font-bold transition-colors duration-300 ${scrolled ? 'text-gray-900' : 'text-white'}`}>
-                MG Dental
-              </span>
-              <p className={`text-xs transition-colors duration-300 ${scrolled ? 'text-gray-500' : 'text-white/70'}`}>
-                Studio Dentistico
-              </p>
-            </div>
-          </a>
+    <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50" style={{ opacity: 0 }}>
+      <div className="flex items-center justify-between px-6 md:px-10 h-20 mx-4 md:mx-6 mt-3 rounded-2xl bg-white/40 backdrop-blur-xl border border-white/50 shadow-lg shadow-black/[0.03]">
+        <a href="#" className="flex items-center gap-3 relative z-50" style={{ isolation: 'isolate' }}>
+          <img src={logo} alt="MG Dental" className="h-10 w-auto" />
+          <span className="text-[var(--ink)] font-medium text-sm tracking-wide hidden sm:block">MG Dental</span>
+        </a>
 
-          {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-primary-600/10 ${
-                  scrolled ? 'text-gray-700 hover:text-primary-600' : 'text-white/90 hover:text-white'
-                }`}
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-
-          {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-3">
-            <a
-              href="tel:0523797093"
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                scrolled ? 'text-gray-600 hover:text-primary-600' : 'text-white/80 hover:text-white'
-              }`}
-            >
-              <Phone className="w-4 h-4" />
-              <span className="hidden xl:inline">0523 797093</span>
-            </a>
-            <a
-              href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20presso%20MG%20Dental."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 shadow-lg shadow-primary-600/25 hover:shadow-primary-600/40"
-            >
-              <MessageCircle className="w-4 h-4" />
-              Prenota Visita
-            </a>
-          </div>
-
-          {/* Mobile Toggle */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className={`lg:hidden p-2 rounded-lg transition-colors ${
-              scrolled ? 'text-gray-700' : 'text-white'
-            }`}
-            aria-label={mobileOpen ? 'Chiudi menu' : 'Apri menu'}
-          >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <div
-        className={`lg:hidden fixed inset-0 top-20 bg-white z-40 transition-all duration-300 ${
-          mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
-        }`}
-      >
-        <div className="px-6 py-8 flex flex-col gap-2">
+        <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
+            <motion.a
               key={link.href}
               href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="text-gray-700 hover:text-primary-600 hover:bg-primary-50 px-4 py-3 rounded-xl text-lg font-medium transition-colors"
+              className="text-[var(--ink)] text-sm font-light tracking-wide"
+              whileHover={{ y: -2 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             >
               {link.label}
-            </a>
+            </motion.a>
           ))}
-          <hr className="my-4 border-gray-200" />
-          <a
-            href="tel:0523797093"
-            className="flex items-center gap-3 text-gray-600 px-4 py-3 rounded-xl hover:bg-gray-50"
-          >
-            <Phone className="w-5 h-5" />
-            <span>0523 797093</span>
-          </a>
+        </div>
+
+        <div className="hidden lg:block">
           <a
             href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20presso%20MG%20Dental."
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 bg-primary-600 text-white px-6 py-4 rounded-xl text-lg font-semibold mt-2"
+            className="text-[var(--ink)] text-sm font-light tracking-wide border border-black/20 rounded-full px-5 py-2 hover:bg-[var(--ink)] hover:text-white transition-all duration-500"
           >
-            <MessageCircle className="w-5 h-5" />
-            Prenota la tua Prima Visita
+            Prenota
           </a>
         </div>
+
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="lg:hidden relative z-50 w-8 h-8 flex flex-col justify-center items-center gap-1.5"
+          aria-label="Menu"
+        >
+          <motion.span className="w-6 h-[1px] bg-[var(--ink)] block"
+            animate={mobileOpen ? { rotate: 45, y: 3.5 } : { rotate: 0, y: 0 }}
+            transition={{ duration: 0.3 }}
+          />
+          <motion.span className="w-6 h-[1px] bg-[var(--ink)] block"
+            animate={mobileOpen ? { rotate: -45, y: -3.5 } : { rotate: 0, y: 0 }}
+            transition={{ duration: 0.3 }}
+          />
+        </button>
       </div>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ clipPath: 'circle(0% at calc(100% - 40px) 40px)' }}
+            animate={{ clipPath: 'circle(150% at calc(100% - 40px) 40px)' }}
+            exit={{ clipPath: 'circle(0% at calc(100% - 40px) 40px)' }}
+            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed inset-0 bg-[var(--ink)] z-40 flex items-center"
+          >
+            <div className="px-10 w-full">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, x: -40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <a
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block font-serif text-white text-4xl sm:text-5xl py-3 border-b border-white/10 hover:pl-4 transition-all duration-300"
+                  >
+                    {link.label}
+                  </a>
+                </motion.div>
+              ))}
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="mt-10">
+                <a
+                  href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20presso%20MG%20Dental."
+                  target="_blank" rel="noopener noreferrer"
+                  className="inline-block text-white border border-white/30 rounded-full px-8 py-3 text-lg hover:bg-white hover:text-black transition-all duration-500"
+                >
+                  Prenota ora
+                </a>
+                <p className="text-white/40 text-sm mt-6 font-mono">0523 797093</p>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   )
 }

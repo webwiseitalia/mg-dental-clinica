@@ -1,110 +1,190 @@
-import { Award, GraduationCap, Stethoscope, Briefcase } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import fotoPante from '../assets/foto/foto-5.webp'
 import fotoBosi from '../assets/foto/foto-10.webp'
 import fotoIzzo from '../assets/foto/foto-7.webp'
 import fotoTeam from '../assets/foto/foto-4.webp'
 
-const teamMembers = [
+gsap.registerPlugin(ScrollTrigger)
+
+const team = [
   {
-    name: 'Dott. Giuseppe Panté',
+    name: 'Giuseppe Panté',
+    title: 'Dott.',
     role: 'Socio Fondatore',
     specialty: 'Chirurgia Orale e Implantologia',
     image: fotoPante,
-    icon: Stethoscope,
-    description: 'Laureato 110 e lode in Odontoiatria e Protesi Dentaria all\'Università di Messina. Specializzato in riabilitazioni implantari complete (Toronto Bridge), carico immediato e chirurgia guidata digitale. Casistica chirurgica estremamente ampia, con un orientamento verso la precisione chirurgica e la predicibilità dei risultati.',
-    highlights: ['Chirurgia guidata digitale', 'Toronto Bridge', 'Carico immediato', 'Laureato 110 e lode'],
+    bio: 'Laureato 110 e lode all\'Università di Messina. Riabilitazioni implantari complete (Toronto Bridge), carico immediato e chirurgia guidata digitale. Precisione chirurgica e predicibilità dei risultati.',
+    tags: ['Chirurgia guidata', 'Toronto Bridge', 'Carico immediato'],
   },
   {
-    name: 'Dott. Marco Bosi',
-    role: 'Socio Fondatore e Direttore Sanitario',
-    specialty: 'Endodonzia e Odontoiatria Estetica',
+    name: 'Marco Bosi',
+    title: 'Dott.',
+    role: 'Direttore Sanitario',
+    specialty: 'Endodonzia e Estetica',
     image: fotoBosi,
-    icon: Award,
-    description: 'Laureato in Odontoiatria e Protesi Dentaria all\'Università Alfonso X El Sabio di Madrid. Punto di riferimento per colleghi della zona e altre province nelle devitalizzazioni e ritrattamenti complessi. Allievo del Dott. Castellani, esperto in faccette estetiche personalizzate e chirurgia orale per casi complessi.',
-    highlights: ['Endodonzia complessa', 'Faccette estetiche', 'Denti del giudizio', 'Odontoiatri PC n.330'],
+    bio: 'Laureato all\'Università Alfonso X El Sabio di Madrid. Punto di riferimento per colleghi in endodonzia complessa. Allievo del Dott. Castellani. Faccette estetiche personalizzate e chirurgia orale.',
+    tags: ['Endodonzia complessa', 'Faccette estetiche', 'PC n.330'],
   },
   {
-    name: 'Dott. Michele Izzo',
+    name: 'Michele Izzo',
+    title: 'Dott.',
     role: 'Responsabile Ortodonzia',
     specialty: 'Ortodonzia e Invisalign',
     image: fotoIzzo,
-    icon: GraduationCap,
-    description: 'Laureato con il massimo dei voti all\'Università degli Studi di Milano. Oltre 20 anni esclusivamente in ortodonzia. Invisalign Apex & Diamond Provider — nel 2024 tra i soli 50 al mondo riconosciuti Apex Provider. Relatore in corsi di certificazione Invisalign. Esperto in disturbi del sonno (OSAS), gnatologia clinica, bruxismo e disturbi ATM.',
-    highlights: ['Invisalign Apex Provider', '20+ anni di esperienza', 'Top 50 al mondo', 'Esperto OSAS e ATM'],
+    bio: 'Laureato con massimo dei voti a Milano. 20+ anni esclusivamente in ortodonzia. Invisalign Apex & Diamond Provider — tra i soli 50 al mondo. Esperto in OSAS, gnatologia, bruxismo e ATM.',
+    tags: ['Apex Provider', 'Top 50 mondiale', '20+ anni'],
   },
   {
-    name: 'Rag. Davide Muggia',
+    name: 'Davide Muggia',
+    title: 'Rag.',
     role: 'CEO e Socio Fondatore',
-    specialty: 'Gestione Strategica e Organizzativa',
+    specialty: 'Gestione Strategica',
     image: fotoTeam,
-    icon: Briefcase,
-    description: 'Gestione strategica, organizzativa e sviluppo della struttura. Nel settore odontoiatrico dal 2016. Coordinamento dei rapporti con fondi sanitari e assicurazioni, innovazione e digitalizzazione dello studio per offrire un servizio sempre più efficiente e a misura di paziente.',
-    highlights: ['Nel settore dal 2016', 'Gestione fondi sanitari', 'Innovazione digitale', 'Sviluppo struttura'],
+    bio: 'Nel settore odontoiatrico dal 2016. Gestione strategica e organizzativa. Coordinamento fondi sanitari e assicurazioni. Innovazione e digitalizzazione dello studio.',
+    tags: ['Dal 2016', 'Fondi sanitari', 'Innovazione'],
   },
 ]
 
 export default function Team() {
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.team-label', { opacity: 0, x: -30 }, {
+        opacity: 1, x: 0, duration: 0.8,
+        scrollTrigger: { trigger: '.team-label', start: 'top 85%' }
+      })
+
+      gsap.fromTo('.team-heading span', { y: '100%' }, {
+        y: '0%', duration: 1, stagger: 0.12, ease: 'power3.out',
+        scrollTrigger: { trigger: '.team-heading', start: 'top 80%' }
+      })
+
+      // Each member with different reveal
+      document.querySelectorAll('.team-member').forEach((member, i) => {
+        const isEven = i % 2 === 0
+        gsap.fromTo(member,
+          { opacity: 0, y: 60, x: isEven ? -30 : 30 },
+          {
+            opacity: 1, y: 0, x: 0,
+            duration: 1, ease: 'power3.out',
+            scrollTrigger: { trigger: member, start: 'top 80%' }
+          }
+        )
+
+        // Image scale
+        const img = member.querySelector('.team-img')
+        if (img) {
+          gsap.fromTo(img, { scale: 1.2 }, {
+            scale: 1, duration: 1.4, ease: 'power2.out',
+            scrollTrigger: { trigger: member, start: 'top 80%' }
+          })
+        }
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="team" className="py-20 md:py-28 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block text-primary-600 font-semibold text-sm tracking-wider uppercase mb-3">Il Nostro Team</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 text-balance">
-            Specialisti dedicati al tuo sorriso
-          </h2>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-            Un team di professionisti altamente qualificati, uniti dalla passione per l'odontoiatria d'eccellenza.
-          </p>
+    <section ref={sectionRef} id="team" className="relative bg-[var(--ink)] text-white overflow-hidden" style={{ paddingTop: 'var(--space-2xl)', paddingBottom: 'var(--space-2xl)' }}>
+      <div className="px-6 md:px-10 lg:px-16">
+        {/* Label */}
+        <div className="team-label font-mono text-[var(--text-xs)] text-white/40 uppercase tracking-[0.3em] mb-6" style={{ opacity: 0 }}>
+          ( 02 ) — Il Team
         </div>
 
-        {/* Team Grid */}
-        <div className="grid md:grid-cols-2 gap-8">
-          {teamMembers.map((member) => (
-            <div
-              key={member.name}
-              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-            >
-              <div className="flex flex-col sm:flex-row">
-                {/* Photo */}
-                <div className="sm:w-48 md:w-56 shrink-0">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-56 sm:h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
+        {/* Heading */}
+        <div className="team-heading max-w-5xl mb-20 lg:mb-28">
+          <h2 className="font-serif text-fluid-display leading-[0.95]">
+            <span className="line-wrap"><span className="block">Specialisti</span></span>
+            <span className="line-wrap"><span className="block italic text-[var(--cyan)]">dedicati</span></span>
+          </h2>
+        </div>
 
-                {/* Info */}
-                <div className="p-6 flex-1">
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center shrink-0">
-                      <member.icon className="w-5 h-5 text-primary-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-900">{member.name}</h3>
-                      <p className="text-primary-600 text-sm font-medium">{member.role}</p>
-                      <p className="text-gray-500 text-xs">{member.specialty}</p>
-                    </div>
-                  </div>
-
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4">{member.description}</p>
-
-                  {/* Highlights */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {member.highlights.map((h) => (
-                      <span
-                        key={h}
-                        className="inline-block bg-primary-50 text-primary-700 text-xs font-medium px-2.5 py-1 rounded-full"
-                      >
-                        {h}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+        {/* Team members — magazine layout, NOT a grid */}
+        <div className="space-y-16 lg:space-y-0 lg:relative">
+          {/* Member 1 — Panté: large left */}
+          <div className="team-member lg:grid lg:grid-cols-12 lg:gap-8 lg:items-start lg:mb-24" style={{ opacity: 0 }}>
+            <div className="lg:col-span-5 overflow-hidden rounded-2xl mb-6 lg:mb-0">
+              <img src={team[0].image} alt={team[0].name} className="team-img w-full h-[50vh] lg:h-[65vh] object-cover" />
+            </div>
+            <div className="lg:col-span-5 lg:col-start-7 lg:pt-20">
+              <span className="font-mono text-[var(--text-xs)] text-white/30 uppercase tracking-widest">{team[0].specialty}</span>
+              <h3 className="font-serif text-fluid-3xl mt-2 mb-1">
+                <span className="text-white/50">{team[0].title}</span> {team[0].name}
+              </h3>
+              <p className="font-mono text-[var(--text-xs)] text-[var(--cyan)] uppercase tracking-wider mb-6">{team[0].role}</p>
+              <p className="text-white/60 text-fluid-base leading-relaxed mb-6">{team[0].bio}</p>
+              <div className="flex flex-wrap gap-2">
+                {team[0].tags.map(t => (
+                  <span key={t} className="text-[10px] font-mono uppercase tracking-wider text-white/40 border border-white/10 rounded-full px-3 py-1">{t}</span>
+                ))}
               </div>
             </div>
-          ))}
+          </div>
+
+          {/* Member 2 — Bosi: right-aligned */}
+          <div className="team-member lg:grid lg:grid-cols-12 lg:gap-8 lg:items-start lg:mb-24" style={{ opacity: 0 }}>
+            <div className="lg:col-span-5 lg:col-start-2 lg:pt-12 order-2 lg:order-1">
+              <span className="font-mono text-[var(--text-xs)] text-white/30 uppercase tracking-widest">{team[1].specialty}</span>
+              <h3 className="font-serif text-fluid-3xl mt-2 mb-1">
+                <span className="text-white/50">{team[1].title}</span> {team[1].name}
+              </h3>
+              <p className="font-mono text-[var(--text-xs)] text-[var(--cyan)] uppercase tracking-wider mb-6">{team[1].role}</p>
+              <p className="text-white/60 text-fluid-base leading-relaxed mb-6">{team[1].bio}</p>
+              <div className="flex flex-wrap gap-2">
+                {team[1].tags.map(t => (
+                  <span key={t} className="text-[10px] font-mono uppercase tracking-wider text-white/40 border border-white/10 rounded-full px-3 py-1">{t}</span>
+                ))}
+              </div>
+            </div>
+            <div className="lg:col-span-5 lg:col-start-8 overflow-hidden rounded-2xl mb-6 lg:mb-0 order-1 lg:order-2">
+              <img src={team[1].image} alt={team[1].name} className="team-img w-full h-[50vh] lg:h-[60vh] object-cover" />
+            </div>
+          </div>
+
+          {/* Member 3 — Izzo: centered-left with offset */}
+          <div className="team-member lg:grid lg:grid-cols-12 lg:gap-8 lg:items-start lg:mb-24" style={{ opacity: 0 }}>
+            <div className="lg:col-span-4 lg:col-start-2 overflow-hidden rounded-2xl mb-6 lg:mb-0">
+              <img src={team[2].image} alt={team[2].name} className="team-img w-full h-[50vh] lg:h-[55vh] object-cover" />
+            </div>
+            <div className="lg:col-span-5 lg:col-start-7 lg:pt-8">
+              <span className="font-mono text-[var(--text-xs)] text-white/30 uppercase tracking-widest">{team[2].specialty}</span>
+              <h3 className="font-serif text-fluid-3xl mt-2 mb-1">
+                <span className="text-white/50">{team[2].title}</span> {team[2].name}
+              </h3>
+              <p className="font-mono text-[var(--text-xs)] text-[var(--cyan)] uppercase tracking-wider mb-6">{team[2].role}</p>
+              <p className="text-white/60 text-fluid-base leading-relaxed mb-6">{team[2].bio}</p>
+              <div className="flex flex-wrap gap-2">
+                {team[2].tags.map(t => (
+                  <span key={t} className="text-[10px] font-mono uppercase tracking-wider text-white/40 border border-white/10 rounded-full px-3 py-1">{t}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Member 4 — Muggia: compact, right */}
+          <div className="team-member lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center" style={{ opacity: 0 }}>
+            <div className="lg:col-span-4 lg:col-start-4 order-2 lg:order-1">
+              <span className="font-mono text-[var(--text-xs)] text-white/30 uppercase tracking-widest">{team[3].specialty}</span>
+              <h3 className="font-serif text-fluid-3xl mt-2 mb-1">
+                <span className="text-white/50">{team[3].title}</span> {team[3].name}
+              </h3>
+              <p className="font-mono text-[var(--text-xs)] text-[var(--cyan)] uppercase tracking-wider mb-6">{team[3].role}</p>
+              <p className="text-white/60 text-fluid-base leading-relaxed mb-6">{team[3].bio}</p>
+              <div className="flex flex-wrap gap-2">
+                {team[3].tags.map(t => (
+                  <span key={t} className="text-[10px] font-mono uppercase tracking-wider text-white/40 border border-white/10 rounded-full px-3 py-1">{t}</span>
+                ))}
+              </div>
+            </div>
+            <div className="lg:col-span-3 lg:col-start-9 overflow-hidden rounded-2xl mb-6 lg:mb-0 order-1 lg:order-2">
+              <img src={team[3].image} alt={team[3].name} className="team-img w-full h-[40vh] lg:h-[45vh] object-cover" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
