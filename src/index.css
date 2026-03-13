@@ -66,7 +66,7 @@ body {
 
 ::selection { background: var(--blue); color: var(--off-white); }
 
-.line-wrap { overflow: hidden; display: block; }
+.line-wrap { overflow: hidden; display: block; padding-bottom: 0.25em; margin-bottom: -0.25em; }
 .line-inner { display: block; }
 
 a, button { cursor: pointer; }

@@ -63,13 +63,13 @@ export default function Hero() {
 
           <h1 ref={titleRef} className="mb-8 lg:mb-12">
             <span className="line-wrap">
-              <span className="hero-line font-serif text-fluid-hero leading-[0.9] tracking-[-0.03em] text-[var(--ink)] block">Scegli di</span>
+              <span className="hero-line font-serif text-fluid-hero leading-[1] tracking-[-0.03em] text-[var(--ink)] block">Scegli di</span>
             </span>
             <span className="line-wrap">
-              <span className="hero-line font-serif italic text-fluid-hero leading-[0.9] tracking-[-0.03em] text-[var(--blue)] block">vivere</span>
+              <span className="hero-line font-serif italic text-fluid-hero leading-[1] tracking-[-0.03em] text-[var(--blue)] block">vivere</span>
             </span>
             <span className="line-wrap">
-              <span className="hero-line font-serif text-fluid-hero leading-[0.9] tracking-[-0.03em] text-[var(--ink)] block">sorridendo</span>
+              <span className="hero-line font-serif text-fluid-hero leading-[1] tracking-[-0.03em] text-[var(--ink)] block">sorridendo</span>
             </span>
           </h1>
 

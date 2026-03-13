@@ -22,8 +22,8 @@ export default function Footer() {
   return (
     <footer ref={sectionRef} className="relative bg-[var(--ink)] text-white overflow-hidden">
       {/* Big CTA Section */}
-      <div className="px-6 md:px-10 lg:px-16" style={{ paddingTop: 'var(--space-2xl)', paddingBottom: 'var(--space-xl)' }}>
-        <div className="footer-cta max-w-5xl">
+      <div className="px-6 md:px-10 lg:px-16 text-center" style={{ paddingTop: 'var(--space-2xl)', paddingBottom: 'var(--space-xl)' }}>
+        <div className="footer-cta max-w-5xl mx-auto">
           <h2 className="font-serif text-fluid-display leading-[0.95] mb-10">
             <span className="line-wrap"><span className="block">Il tuo sorriso merita</span></span>
             <span className="line-wrap"><span className="block italic text-[var(--cyan)]">un progetto</span></span>
