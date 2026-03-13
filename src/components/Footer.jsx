@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import MagneticButton from './MagneticButton'
 import logo from '../assets/logo.webp'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -31,18 +32,20 @@ export default function Footer() {
           </h2>
         </div>
 
-        <a
-          href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20presso%20MG%20Dental."
-          target="_blank" rel="noopener noreferrer"
-          className="group inline-flex items-center gap-4"
-        >
-          <span className="w-16 h-16 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:scale-110 transition-all duration-500">
-            <svg className="w-6 h-6 text-white group-hover:text-[var(--ink)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-            </svg>
-          </span>
-          <span className="text-white text-fluid-xl font-light tracking-wide">Prenota ora</span>
-        </a>
+        <MagneticButton className="inline-block" strength={0.3}>
+          <a
+            href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20presso%20MG%20Dental."
+            target="_blank" rel="noopener noreferrer"
+            className="group inline-flex items-center gap-4"
+          >
+            <span className="w-16 h-16 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:scale-110 transition-all duration-500">
+              <svg className="w-6 h-6 text-white group-hover:text-[var(--ink)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+              </svg>
+            </span>
+            <span className="text-white text-fluid-xl font-light tracking-wide">Prenota ora</span>
+          </a>
+        </MagneticButton>
       </div>
 
       {/* Divider */}

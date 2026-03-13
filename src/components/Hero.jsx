@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import MagneticButton from './MagneticButton'
 import clinicExterior from '../assets/foto/foto-12.webp'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -82,20 +83,22 @@ export default function Hero() {
           </div>
 
           <div ref={ctaRef} className="mt-12 lg:mt-16" style={{ opacity: 0 }}>
-            <a
-              href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20presso%20MG%20Dental."
-              target="_blank" rel="noopener noreferrer"
-              className="group inline-flex items-center gap-4"
-            >
-              <span className="w-14 h-14 rounded-full bg-[var(--ink)] flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                </svg>
-              </span>
-              <span className="text-[var(--ink)] text-fluid-lg font-light tracking-wide group-hover:tracking-wider transition-all duration-500">
-                Prenota la tua visita
-              </span>
-            </a>
+            <MagneticButton className="inline-block" strength={0.3}>
+              <a
+                href="https://wa.me/3514163362?text=Buongiorno%2C%20vorrei%20prenotare%20una%20prima%20visita%20presso%20MG%20Dental."
+                target="_blank" rel="noopener noreferrer"
+                className="group inline-flex items-center gap-4"
+              >
+                <span className="w-14 h-14 rounded-full bg-[var(--ink)] flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                  </svg>
+                </span>
+                <span className="text-[var(--ink)] text-fluid-lg font-light tracking-wide group-hover:tracking-wider transition-all duration-500">
+                  Prenota la tua visita
+                </span>
+              </a>
+            </MagneticButton>
           </div>
         </div>
 
